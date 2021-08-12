@@ -156,6 +156,4 @@ router.get("/users/:id/avatar", async (req, res) => {
   }
 });
 
-router.get(){}
-
 module.exports = router;
