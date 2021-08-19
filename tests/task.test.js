@@ -20,3 +20,16 @@ test("Should create task for user", async () => {
   expect(task).not.toBeNull();
   expect(task.completed).toEqual(false);
 });
+
+test("Should request all tasks for user", async () => {
+  const response = await request(app)
+    .get("/tasks")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+  expect(response.body.length).toEqual(2);
+});
+
+test("Should not be able to delete tasks from other people", async () => {
+  const response = await request(app).delete;
+});
