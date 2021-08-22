@@ -167,3 +167,27 @@ test("Should not update invalid user fields", async () => {
   const user = await User.findById(userOneId);
   expect.not.objectContaining(user.location);
 });
+
+test("Should not update user with invalid email", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ email: "antoniopavao.com" })
+    .expect(400);
+});
+
+test("Should not update user with invalid email", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ email: "antoniopavao.com" })
+    .expect(400);
+});
+
+test("Should not update user with invalid name", async () => {
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({ name: "" })
+    .expect(400);
+});
