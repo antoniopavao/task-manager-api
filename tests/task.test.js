@@ -30,6 +30,36 @@ test("Should create task for user", async () => {
   expect(task.completed).toEqual(false);
 });
 
+test("Should not create task with invalid description", async () => {
+  await request(app)
+    .post("/tasks")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({
+      description: "",
+    })
+    .expect(400);
+});
+
+test("Should not create task with invalid fields", async () => {
+  await request(app)
+    .post("/tasks")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({
+      location: "Osasco",
+    })
+    .expect(400);
+});
+
+test("Should not create task with invalid completed", async () => {
+  await request(app)
+    .post("/tasks")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send({
+      completed: "yes",
+    })
+    .expect(400);
+});
+
 test("Should request all tasks for user", async () => {
   const response = await request(app)
     .get("/tasks")
