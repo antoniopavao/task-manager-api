@@ -69,6 +69,37 @@ test("Should request all tasks for user", async () => {
   expect(response.body.length).toEqual(2);
 });
 
+test("Should not update task with invalid description", async () => {
+  await request(app)
+    .patch("/tasks/me")
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`)
+    .send({
+      description: "",
+    })
+    .expect(400);
+});
+
+test("Should not update task with invalid completed", async () => {
+  await request(app)
+    .patch("/tasks/me")
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`)
+    .send({
+      completed: "yes",
+    })
+    .expect(400);
+});
+
+test("Should delete user task", async () => {
+  const response = await request(app)
+    .delete(`/tasks/${taskOne._id}`)
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  const task = Task.findById(taskOne._id);
+  expect(task).not.toBeNull();
+});
+
 test("Should not be able to delete tasks from other people", async () => {
   const response = await request(app)
     .delete(`/tasks/${taskOne._id}`)
@@ -78,4 +109,8 @@ test("Should not be able to delete tasks from other people", async () => {
 
   const task = Task.findById(taskOne._id);
   expect(task).not.toBeNull();
+});
+
+test("Should not delete tasks if unauthenticated", async () => {
+  await request(app).delete(`/tasks/${taskOne._id}`).send().expect(401);
 });
