@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../../src/models/user");
 const Task = require("../../src/models/task");
 
+// Defining user id for testing purposes
 const userOneId = new mongoose.Types.ObjectId();
 
 // Defining user for testing purposes
@@ -22,7 +23,7 @@ const userOne = {
     },
   ],
 };
-
+// Defining user id for testing purposes
 const userTwoId = new mongoose.Types.ObjectId();
 
 // Defining user for testing purposes
@@ -64,7 +65,7 @@ const taskThree = {
   owner: userTwo._id,
 };
 
-// Deleting everything in the database for new "users"
+// Deleting everything (users and tasks) in the database for new "users"
 const setupDatabase = async () => {
   await User.deleteMany();
   await Task.deleteMany();
@@ -78,5 +79,10 @@ const setupDatabase = async () => {
 module.exports = {
   userOneId,
   userOne,
+  userTwoId,
+  userTwo,
+  taskOne,
+  taskTwo,
+  taskThree,
   setupDatabase,
 };

@@ -1,7 +1,16 @@
 const request = require("supertest");
 const app = require("../src/app");
 const Task = require("../src/models/task");
-const { userOneId, userOne, setupDatabase } = require("./fixtures/db");
+const {
+  userOneId,
+  userOne,
+  userTwoId,
+  userTwo,
+  taskOne,
+  taskTwo,
+  taskThree,
+  setupDatabase,
+} = require("./fixtures/db");
 
 // This will run before each test case
 // --> Deleting everything in the database and setup the default user for login tests
@@ -31,6 +40,12 @@ test("Should request all tasks for user", async () => {
 });
 
 test("Should not be able to delete tasks from other people", async () => {
-  const response = await request(app).delete;
-  expect(1).toBe(1);
+  const response = await request(app)
+    .delete(`/tasks/${taskOne._id}`)
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(404);
+
+  const task = Task.findById(taskOne._id);
+  expect(task).not.toBeNull();
 });
