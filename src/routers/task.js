@@ -19,7 +19,6 @@ router.post("/tasks", auth, async (req, res) => {
 });
 
 // Sorting, Pagination and Filtering
-
 // Filtering
 
 // GET /tasks?completed=false or true --> with this we can filter the results
